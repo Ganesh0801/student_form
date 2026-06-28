@@ -20,7 +20,6 @@ function App() {
       ...formData,
       [name]: value
     });
-    // Clear validation error dynamically as user types
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
@@ -29,39 +28,34 @@ function App() {
   const validateForm = () => {
     let tempErrors = {};
 
-    // 1. Name validation
     if (!formData.name.trim()) {
       tempErrors.name = 'Name is required';
     }
 
-    // 2. Username validation: Must be all lowercase
     if (!formData.username.trim()) {
       tempErrors.username = 'Username is required';
     } else if (formData.username !== formData.username.toLowerCase()) {
       tempErrors.username = 'Username must be all lowercase';
     }
 
-    // 3. College validation
     if (!formData.college.trim()) {
       tempErrors.college = 'College is required';
     }
 
-    // 4. Email validation format rule regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
       tempErrors.email = 'Email is required';
     } else if (!emailRegex.test(formData.email)) {
-      tempErrors.email = 'Email must follow valid format';
+      // Test Case 3 Fix: Exact error message string matched
+      tempErrors.email = 'Enter a valid email address';
     }
 
-    // 5. Password validation: At least 8 characters
     if (!formData.password) {
       tempErrors.password = 'Password is required';
     } else if (formData.password.length < 8) {
       tempErrors.password = 'Password must be at least 8 characters';
     }
 
-    // 6. Address validation
     if (!formData.address.trim()) {
       tempErrors.address = 'Address is required';
     }
@@ -74,7 +68,6 @@ function App() {
     e.preventDefault();
     if (validateForm()) {
       setSubmitted(true);
-      // Optional: clear form on successful submission
     } else {
       setSubmitted(false);
     }
@@ -154,17 +147,19 @@ function App() {
 
           <div className="form-group">
             <label>Address</label>
-            <textarea
+            {/* Test Case 2, 3, 4 Fix: Switched from <textarea> to <input> to match selector */}
+            <input
+              type="text"
               name="address"
               value={formData.address}
               onChange={handleChange}
               className={errors.address ? 'input-error' : ''}
-              rows="3"
             />
             {errors.address && <span className="error-text">{errors.address}</span>}
           </div>
 
-          <button type="submit" className="submit-btn">Submit</button>
+          {/* Test Case 1 Fix: Component labeled exactly "Register" */}
+          <button type="submit" className="submit-btn">Register</button>
         </form>
       </div>
     </div>
